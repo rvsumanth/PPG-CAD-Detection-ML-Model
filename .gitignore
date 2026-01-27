@@ -1,0 +1,93 @@
+# =========================
+# Python Bytecode & Cache
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Virtual Environments
+# =========================
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Data Files (Large / Sensitive)
+# =========================
+data/raw/
+data/processed/
+data/inference/
+
+# If you want to keep folder structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/inference/.gitkeep
+
+# =========================
+# Model Artifacts
+# =========================
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.onnx
+
+# =========================
+# Logs & Outputs
+# =========================
+logs/
+*.log
+results/
+outputs/
+predictions/
+
+# =========================
+# Experiment Tracking
+# =========================
+mlruns/
+wandb/
+tensorboard/
+
+# =========================
+# OS Generated Files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# IDE / Editor Settings
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Packaging / Build
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.bak
+*.old
