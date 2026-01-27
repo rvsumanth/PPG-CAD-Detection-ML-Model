@@ -186,15 +186,15 @@ python src/predict.py --mode evaluate --input data/inference/cleaned-test-ppg-da
 - Random Forest and ensemble models outperformed linear baselines
 - Demonstrated feasibility of PPG-based CAD detection
 
-🧾 Dependencies
-
+## 🧾 Dependencies
+```text
 Python 3.8+
 NumPy
 Pandas
 Scikit-learn
 SciPy
 Matplotlib
-
+```
 (See requirements.txt for the full list)
 
 ## 📌 Future Work
