@@ -149,21 +149,28 @@ Overall, the extracted feature set provides a comprehensive representation of ca
 
 ## 🚀 How to Run the Project
 **1️⃣ Create Virtual Environment**
+```text
 python -m venv env
 source env/bin/activate   # Linux / Mac
 env\Scripts\activate      # Windows
-
+```
 **2️⃣ Install Dependencies**
+```text
 pip install -r requirements.txt
-
+```
 **3️⃣ Train the Model**
+```text
 python src/train.py
-
+```
 **4️⃣ Evaluate the Model**
+```text
 python src/evaluate.py
+```
 
 **5️⃣ Run Inference**
+```text
 python src/predict.py --mode evaluate --input data/inference/cleaned-test-ppg-data.csv
+```
 
 ## 📈 Key Challenges & Solutions
 | Challenge           | Solution                           |
@@ -179,15 +186,15 @@ python src/predict.py --mode evaluate --input data/inference/cleaned-test-ppg-da
 - Random Forest and ensemble models outperformed linear baselines
 - Demonstrated feasibility of PPG-based CAD detection
 
-🧾 Dependencies
-
+## 🧾 Dependencies
+```text
 Python 3.8+
 NumPy
 Pandas
 Scikit-learn
 SciPy
 Matplotlib
-
+```
 (See requirements.txt for the full list)
 
 ## 📌 Future Work
