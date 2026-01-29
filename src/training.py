@@ -15,15 +15,22 @@ def train_model(csv_path):
     print("Initializing model...")
     model = HarmonizedCADModel()
     model.fit(X, y)
-    model.feature_names_ = X.columns.tolist()
+
 
     
     print("Saving trained model...")
     model.save('models/CAD_Harmonized_91_77_Model.pkl')
 
-    # 🔥 Evaluation after training
+    # Evaluation after training
     print("Evaluating model performance...")
-    evaluate_and_report(model, X, y)
+    evaluate_and_report(
+        model=model,
+        X=X,
+        y=y,
+        feature_names=model.feature_names_
+    )
 
-    print("✅ Model training, evaluation, and saving completed.")
+
+
+    print("Model training, evaluation, and saving completed.")
     return model

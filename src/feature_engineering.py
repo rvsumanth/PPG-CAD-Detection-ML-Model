@@ -82,9 +82,17 @@ class HarmonizedPPGFeatureExtractor(BaseEstimator, TransformerMixin):
 
         rf.fit(features, y)
         importances = rf.feature_importances_
+        all_names = self.get_all_feature_names()
+
         self.selected_feature_indices_ = np.argsort(importances)[::-1][:self.n_features_to_keep]
+        all_names = self.get_all_feature_names()
+
+        self.selected_feature_names_ = [
+            all_names[i] for i in self.selected_feature_indices_
+        ]
 
         return features[:, self.selected_feature_indices_]
+
 
     def transform(self, X):
         processed = []
@@ -124,6 +132,41 @@ class HarmonizedPPGFeatureExtractor(BaseEstimator, TransformerMixin):
             if self.selected_feature_indices_ is not None
             else X_arr
         )
+    
+    def get_all_feature_names(self):
+        base = [
+            "age_norm", "gender", "is_diabetic",
+            "has_high_cholesterol", "is_obese"
+        ]
+
+        interactions = [
+            "age_diabetic",
+            "age_cholesterol",
+            "diabetic_cholesterol",
+            "age_stiffness",
+            "cholesterol_stiffness",
+            "crest_age",
+            "crest_cholesterol",
+            "age_diabetic_cholesterol"
+        ]
+
+        ppg_features = []
+        for i in range(6):  # ppg_min_3 to ppg_min_8
+            ppg_features.extend([
+                f"ppg{i}_crest_time",
+                f"ppg{i}_stiffness",
+                f"ppg{i}_dummy",
+                f"ppg{i}_heart_rate",
+                f"ppg{i}_hrv",
+                f"ppg{i}_spectral_power",
+                f"ppg{i}_dominant_freq",
+                f"ppg{i}_mean",
+                f"ppg{i}_std",
+                f"ppg{i}_skew"
+            ])
+
+        return base + interactions + ppg_features
+
 
     def fit(self, X, y=None):
         return self

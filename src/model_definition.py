@@ -17,6 +17,19 @@ class HarmonizedCADModel:
         self.is_trained = False
 
     def build_model(self):
+        self.lgb_model = lgb.LGBMClassifier(
+            n_estimators=150,
+            max_depth=5,
+            learning_rate=0.05,
+            subsample=0.7,
+            colsample_bytree=0.7,
+            reg_alpha=0.1,
+            reg_lambda=1.5,
+            class_weight='balanced',
+            random_state=self.random_state,
+            verbosity=-1
+        )
+
         base_models = [
             ('rf', RandomForestClassifier(
                 n_estimators=200, max_depth=8,
@@ -35,20 +48,9 @@ class HarmonizedCADModel:
                 random_state=self.random_state,
                 n_jobs=-1
             )),
-            ('lgb', lgb.LGBMClassifier(
-                n_estimators=150,
-                max_depth=5,
-                learning_rate=0.05,
-                subsample=0.7,
-                colsample_bytree=0.7,
-                reg_alpha=0.1,
-                reg_lambda=1.5,
-                class_weight='balanced',
-                random_state=self.random_state,
-                verbosity=-1      # 🔥 suppress warnings
-            ))
-
+            ('lgb', self.lgb_model)
         ]
+
 
         meta = LogisticRegression(
             C=0.2, penalty='l1', solver='liblinear',
@@ -62,11 +64,25 @@ class HarmonizedCADModel:
         )
 
     def fit(self, X, y):
+        # 1. Feature engineering + selection
         X_feat = self.feature_extractor.fit_transform(X, y)
+        self.X_feat_ = X_feat  # numeric matrix actually used
+
+        # 2. Store SELECTED feature names (🔥 KEY FIX)
+        self.feature_names_ = self.feature_extractor.selected_feature_names_
+
+        # 3. Scaling
         X_scaled = self.scaler.fit_transform(X_feat)
+
+        # 4. Build and train models
         self.build_model()
         self.model.fit(X_scaled, y)
+
+        # 5. Train LightGBM separately for feature importance
+        self.lgb_model.fit(X_scaled, y)
+
         self.is_trained = True
+
 
     def predict_proba(self, X):
         X_feat = self.feature_extractor.transform(X)
@@ -79,3 +95,9 @@ class HarmonizedCADModel:
 
     def save(self, path):
         joblib.dump(self, path)
+
+
+    def get_feature_importance_model(self):
+        self.feature_names_ = self.feature_extractor.selected_feature_names_
+        return self.lgb_model
+
