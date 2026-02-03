@@ -11,7 +11,8 @@ from sklearn.metrics import (
     accuracy_score,
     precision_score,
     recall_score,
-    f1_score
+    f1_score,
+    roc_curve
 )
 
 # --------------------------------------------------
@@ -74,6 +75,8 @@ def evaluate_and_report(model, X, y, feature_names=None, threshold=0.317):
     plot_decision_buffer_zones(y_prob, stage)
     plot_confusion_matrix_cost(y, y_prob, stage)
     plot_performance_targets(metrics, stage)
+    plot_roc_curve(y, y_prob, stage)
+
 
     if feature_names is not None:
         base_model = model.get_feature_importance_model()
@@ -244,7 +247,7 @@ def plot_confusion_matrix_cost(y_true, y_prob,stage, threshold=0.317):
 
 
 # ==================================================
-# 6. Performance vs 91/77 Targets
+# 6. Performance vs Target Metrics Plot
 # ==================================================
 def plot_performance_targets(metrics, stage):
     fig_dir = get_figure_dir(stage)
@@ -258,8 +261,31 @@ def plot_performance_targets(metrics, stage):
     plt.axhline(0.77, linestyle="--", color="blue", label="Precision Target")
 
     plt.ylabel("Score")
-    plt.title("Performance vs 91/77 Targets")
+    plt.title("Performance vs Target Metrics Plot")
     plt.legend()
     plt.tight_layout()
     plt.savefig(f"{fig_dir}/performance_vs_targets.png", dpi=300)
+    plt.close()
+
+
+# ==================================================
+# 7. ROC curve
+# ==================================================
+def plot_roc_curve(y_true, y_prob, stage):
+    fig_dir = get_figure_dir(stage)
+
+    fpr, tpr, _ = roc_curve(y_true, y_prob)
+    auc_score = roc_auc_score(y_true, y_prob)
+
+    plt.figure(figsize=(6, 6))
+    plt.plot(fpr, tpr, label=f"AUC = {auc_score:.3f}", linewidth=2)
+    plt.plot([0, 1], [0, 1], linestyle="--", color="gray")
+
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("ROC Curve")
+    plt.legend(loc="lower right")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f"{fig_dir}/roc_curve.png", dpi=300)
     plt.close()

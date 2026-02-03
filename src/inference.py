@@ -18,7 +18,8 @@ from src.evaluation import (
     plot_decision_buffer_zones,
     plot_confusion_matrix_cost,
     plot_performance_targets,
-     plot_feature_importance   
+    plot_feature_importance,
+    plot_roc_curve   
 )
 
 # --------------------------------------------------
@@ -176,6 +177,8 @@ def evaluate_unseen(csv_path, model_path, threshold=DEFAULT_THRESHOLD):
         "F1": metrics["F1"],
         "Accuracy": metrics["Accuracy"]
     }, stage)
+    plot_roc_curve(y, probs, stage)
+
 
     # --------------------------------------------------
     # 🔥 FEATURE IMPORTANCE (FROM LIGHTGBM BASE MODEL)
