@@ -26,6 +26,7 @@ venv.bak/
 data/raw/
 data/processed/
 data/inference/
+data/storage
 
 # If you want to keep folder structure
 !data/raw/.gitkeep
