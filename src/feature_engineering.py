@@ -12,6 +12,7 @@ class HarmonizedPPGFeatureExtractor(BaseEstimator, TransformerMixin):
         self.sampling_rate = sampling_rate
         self.n_features_to_keep = n_features_to_keep
         self.selected_feature_indices_ = None
+        
 
     def extract_single_ppg_features(self, ppg_signal):
         if len(ppg_signal) < 20:
