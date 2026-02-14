@@ -6,8 +6,9 @@ from sklearn.calibration import CalibratedClassifierCV
 import xgboost as xgb
 import lightgbm as lgb
 from .feature_engineering import HarmonizedPPGFeatureExtractor
+from sklearn.base import BaseEstimator, ClassifierMixin
 
-class HarmonizedCADModel:
+class HarmonizedCADModel(BaseEstimator, ClassifierMixin):
 
     def __init__(self, random_state=42):
         self.random_state = random_state
